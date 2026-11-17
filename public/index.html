@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Key Rotation Control</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>Key Rotation Control</h1>
+          <p class="subtle" id="dataset-line">Loading fictional estate…</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="pill" id="epoch-pill">epoch —</span>
+        <span class="pill" id="mapping-pill">mapping —</span>
+        <span class="pill" id="version-pill">version —</span>
+        <button class="btn ghost" id="refresh-btn" type="button">Refresh</button>
+        <button class="btn ghost" id="reset-btn" type="button">Reset demo</button>
+      </div>
+    </header>
+
+    <main id="main" class="layout">
+      <p class="banner error hidden" id="global-error" role="alert"></p>
+      <p class="banner ok hidden" id="global-ok" role="status"></p>
+
+      <section class="panel span-2" aria-labelledby="h-estate">
+        <div class="panel-head">
+          <h2 id="h-estate">Estate &amp; join groups</h2>
+          <p class="subtle">Every table in a group must move to the new key in the same version.</p>
+        </div>
+        <div id="estate" class="estate"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-plan">
+        <div class="panel-head">
+          <h2 id="h-plan">Emission plan</h2>
+          <p class="subtle">Dual where the ruling permits it; replacement where it does not.</p>
+        </div>
+        <div id="plan"></div>
+        <div class="controls" style="margin-top:.75rem">
+          <label class="field">
+            <span>Simulate source change</span>
+            <select id="change-table"></select>
+          </label>
+          <button class="btn sm" id="add-change-btn" type="button">Add late record</button>
+          <button class="btn sm" id="del-change-btn" type="button">Delete record</button>
+        </div>
+        <div id="pending-changes" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-preview">
+        <div class="panel-head">
+          <h2 id="h-preview">Preview impact</h2>
+          <p class="subtle">Trial compile at the current source, nothing published.</p>
+        </div>
+        <div class="controls">
+          <label class="field">
+            <span>Package mode</span>
+            <select id="preview-mode">
+              <option value="dual">Dual-key transition</option>
+              <option value="replacement">Whole-version replacement</option>
+            </select>
+          </label>
+          <button class="btn" id="preview-btn" type="button">Run preview</button>
+        </div>
+        <div id="preview" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-migration">
+        <div class="panel-head">
+          <h2 id="h-migration">Migration control</h2>
+          <p class="subtle">Start, chase acknowledgements, revoke, or commit.</p>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="start-btn" type="button">Start migration</button>
+          <button class="btn danger" id="revoke-btn" type="button" disabled>Revoke / roll back</button>
+          <button class="btn" id="commit-btn" type="button" disabled>Commit</button>
+        </div>
+        <div id="migration" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-consumers">
+        <div class="panel-head">
+          <h2 id="h-consumers">Consumers</h2>
+          <p class="subtle">Each subscribed consumer must acknowledge the exact plan.</p>
+        </div>
+        <div id="consumers" class="stack"></div>
+      </section>
+
+      <section class="panel span-2" aria-labelledby="h-evidence">
+        <div class="panel-head">
+          <h2 id="h-evidence">Cross-table consistency evidence</h2>
+          <p class="subtle">Verified independently in every emitted key space.</p>
+        </div>
+        <div id="evidence" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-fencing">
+        <div class="panel-head">
+          <h2 id="h-fencing">Publisher fencing</h2>
+          <p class="subtle">An old process holding a stale lease cannot publish.</p>
+        </div>
+        <div class="controls">
+          <label class="field">
+            <span>Worker id</span>
+            <input id="worker-id" type="text" value="worker-legacy-01" autocomplete="off" />
+          </label>
+          <button class="btn" id="lease-btn" type="button">Issue lease</button>
+        </div>
+        <div id="fencing" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-versions">
+        <div class="panel-head">
+          <h2 id="h-versions">Published versions</h2>
+          <p class="subtle">Downloads are self-verifying evidence bundles.</p>
+        </div>
+        <div id="versions" class="stack"></div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p class="subtle">
+        Fictional data only. Every publication is compiled, verified, and checksummed before it becomes visible.
+      </p>
+    </footer>
+
+    <dialog id="rows-dialog" aria-labelledby="rows-title">
+      <div class="dialog-head">
+        <h2 id="rows-title">Published rows</h2>
+        <button class="btn sm" id="rows-close" type="button">Close</button>
+      </div>
+      <div class="dialog-body" id="rows-body"></div>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
